@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<link rel="stylesheet" type="text/css" href="mystyle.css" media="screen" />
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>JS_DZ_Weather</title>
+  <style>
+  </style>
+  </head>
+  <body>
+  <button onclick="getWeather()">Получить данные погоды</button>
+  <div class="weather_block">
+    <p class="date"></p>
+    <h3 class="city"></h3>
+    <h3 class="country"></h3>
+    <p>Температура: <span class="temp"></span>°C</p>
+    <p>Ветер: <span class="wind"></span> км/ч</p>
+    <p>Давление: <span class="pressure"></span> миллибар</p>
+    <div class="icon">
+      <image/>    
+    </div>
+    <p class="desc"></p> 
+  </div>
+
+  <div class="forecast_div">
+  </div>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script>
+
+
+function getWeather() 
+    {
+        let apiKey = "b5e3deedc44d1a551da766f54aa11442";
+      console.log(apiKey);
+      // Город погода которого нужна
+      let city = "Moscow";
+      // Формируем url для GET запроса
+      let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&lang=ru&units=metric&appid=${apiKey}`;
+      let url_forecast = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&lang=ru&units=metric&appid=${apiKey}`;
+      console.log(url);
+      
+      axios.get(url).then(res => {
+     // Выводим результат в консоль браузера
+     console.log(res.data);
+  })
+
+// Отправка GET запроса
+  axios.get(url).then(res => {
+
+   document.querySelector('.date').innerHTML = new Date().toLocaleString();
+   // Вывод города
+   document.querySelector('.city').innerHTML = res.data.name
+
+   document.querySelector('.country').innerHTML = res.data.sys.country
+   // Вывод температуры
+   document.querySelector('.temp').innerHTML = res.data.main.temp
+   // Вывод скорости ветра
+   document.querySelector('.wind').innerHTML = res.data.wind.speed
+
+   document.querySelector('.pressure').innerHTML = res.data.main.pressure
+
+   var icon = res.data.weather[0].icon
+   console.log("icon: " + icon)
+   var imgURL = "https://openweathermap.org/img/w/" + icon + ".png";
+   document.querySelector('.icon').children[0].src = imgURL;
+
+   document.querySelector('.desc').innerHTML = res.data.weather[0].description;
+  })
+
+  axios.get(url_forecast).then(res => {
+
+    console.log(res.data.list);
+    renderForecast(res.data);
+    })
+    }
+
+
+    function renderForecast(data) {
+      let forecastDataContainer = document.querySelector('.forecast_div');
+      let forecasts = '';
+
+      console.log("data list length: " + data.list.length);
+      for (let i = 1; i <= data.list.length; i+=8) {
+        let item = data.list[i];
+
+        let icon = item.weather[0].icon;
+        var imgURL = "https://openweathermap.org/img/w/" + icon + ".png";
+        let temp = item.main.temp;
+        let date = item.dt_txt;
+
+        //<div class="icon"><image src=`${imgURL}`/></div>
+
+        let template = `<div class="forecast_item">
+          <div>${date}</div>         
+          <div class="forecast__temperature">${temp}</div>
+          <div class="icon"><image src='${imgURL}'/></div>
+        </div>`;
+        forecasts += template;
+      }
+      forecastDataContainer.innerHTML = forecasts;
+    }
+  </script>
+
+</body></html>

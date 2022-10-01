@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JS_DZ_task1</title>
+    <style>
+    	form{padding: 10px; background-color: #e8d55d; }
+    	* {width: 99%; margin: 5px;}
+    	h{
+    		font-weight: bold;
+    	}
+    </style>
+</head>
+<body>
+	
+	<form method='GET'>
+		<div id="container">
+			<div id="block" style="background-color: green;">
+			<h id="sender_name">Name</h><h id="date">11111111</h><br/>
+			<p id="mymessge">
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+			cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+			proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+			</p>
+			<br/>
+			<br/>
+			</div>
+		</div>
+
+		<div style="background-color: yellow;">
+        <b>Your name:</b><input type="text" placeholder="Enter name" name="name" />
+        <br/>
+        <b>Your message:</b><input type="text" placeholder="" name="message" />
+        <br/>
+        </div>
+        <input type="button" value="Send" onclick="add_click()" />
+    </form>
+
+    
+    <script>
+		function add_click(){
+			var container = document.getElementById("container");
+
+			console.log("1)");	
+			var f = document.forms[0];
+			
+			var line = f.children[0].children[0];
+			var newLine = line.cloneNode(true);	
+
+			console.log("2)");	
+
+			document.getElementById('sender_name').innerText = f.children[1].children[1].value;
+			document.getElementById('date').innerText = new Date().toLocaleString();
+			document.getElementById('mymessge').innerText = f.children[1].children[4].value;
+			//newLine.children[0].value =  f.children[1].children[1].value;
+			//newLine.children[0].children[1].value = new Date().toISOString().slice(0, 10);
+			//newLine.children[0].children[3].value = f.children[1].children[4].value;
+
+			container.appendChild(newLine);
+		}		
+    </script>
+</body>
+</html>

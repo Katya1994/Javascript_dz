@@ -1,0 +1,233 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JS_DZ_Regex</title>
+    <style>
+    	form{padding: 10px; background-color: #e8d55d; }
+    	* {margin: 5px;}
+    	h{
+    		font-weight: bold;
+    	}
+
+        select{
+            width: 200px;
+        }
+
+        input{
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+	
+	<form method='GET' id="colorForm" onsubmit="return checkForm(event)">
+        <div style="margin:10px 0;">
+            Color Name:</br><input type="text" placeholder="Enter color name" name="name" id="color_name" required/>
+        	</br>Type:</br>
+            <select name="type" id="select_type">
+                    <option value="1" selected>RGB</option>
+                    <option value="2">RGBA</option>
+                    <option value="3">HEX</option>
+            </select>
+        </br>Code:</br>
+        <input type="text" placeholder="" name="color_code" id="color_code"/>
+        </div>
+        <hr>
+        <input type="submit" value="Save" />
+    </form>
+
+    <button onclick="saveToCookie()">Save cookie</button><br/>
+
+    <div id="container" style="width: 300px;">
+        <div id="block">
+            <h id="colorName">
+            </h><br/>
+            <h id="colorType"></h><br/>
+            <h id="colorCode"></h>
+        </div>
+    </div>     
+    
+    <script>
+        var colorArray = [];
+        var cookieName = "myArr";
+        var separator = "\t";       
+
+        function checkForm(event){
+            event.preventDefault();
+
+            var n1 = document.getElementById("color_name").value;
+            var t1 = /^[a-zA-Z]+$/;
+            if(!t1.test(n1)){
+                alert("Color name can contain only letters");
+                return false;
+            }
+
+            for(var i = 0; i < colorArray.length; i++ ){
+                console.log("(" + i);
+                if(colorArray[i].Name == n1){
+                    alert("Color with same name is already exist");
+                    return false;
+                }
+            }
+
+            var n2 = document.getElementById("color_code").value;
+            var selectedType = document.getElementById("select_type").selectedIndex;
+
+            if(selectedType == 0){
+                console.log("type 0");
+                var t2 = /(\b(?:1\d{2}|2[0-4]\d|[1-9]?\d|25[0-5])\b)[,](\b(?:1\d{2}|2[0-4]\d|[1-9]?\d|25[0-5])\b)[,](\b(?:1\d{2}|2[0-4]\d|[1-9]?\d|25[0-5])\b)$/;
+
+                if(!t2.test(n2)){
+                    alert("RGB must match pattern: [0-255],[0-255],[0-255]");
+                    return false;
+                }
+            }
+            else if(selectedType == 1){
+                ///^(?:(?<!\d*[1-9]\.?0*)(?:(?:0+(?:\.\d+)?)|(?:\.\d+)|(?:1(?!\.0*[1-9]+)(?:\.0+)?)))$/ - float from 0 to 1
+                //(\b(?:1\d{2}|2[0-4]\d|[1-9]?\d|25[0-5])\b) - number from 0 to 255
+                console.log("type 1");
+                var t2 = /(\b(?:1\d{2}|2[0-4]\d|[1-9]?\d|25[0-5])\b)[,](\b(?:1\d{2}|2[0-4]\d|[1-9]?\d|25[0-5])\b)[,](\b(?:1\d{2}|2[0-4]\d|[1-9]?\d|25[0-5])\b)[,](?:(?<!\d*[1-9]\.?0*)(?:(?:0+(?:\.\d+)?)|(?:\.\d+)|(?:1(?!\.0*[1-9]+)(?:\.0+)?)))$/;
+
+                if(!t2.test(n2)){
+                    alert("RGB must match pattern: [0-255],[0-255],[0-255],[0-1]");
+                    return false;
+                }
+            }
+            else if(selectedType == 2){
+                console.log("type 2");
+                var t2 = /^#[0-9a-fA-F]{6}/;
+
+                if(!t2.test(n2)){
+                    alert("RGB must match pattern: #55A5A7");
+                    return false;
+                }
+            }
+            
+            // if(!t2.test(n2)){
+            //     alert("color code is incorrect");
+            //     return false;
+            // }
+
+            let color = {
+                Name: document.getElementById("color_name").value,
+                Type: document.getElementById("select_type").selectedIndex,
+                Code: document.getElementById("color_code").value
+            }
+
+            let alfa = -1;
+            if(color.Type == 0){
+                console.log("alfa == 1");
+                alfa = 1;
+            }
+
+            
+            console.log(color);
+            colorArray.push(color);
+            addColor(color);
+
+            //submit обновляет консоль
+            //document.getElementById("colorForm").submit();
+            return true;
+            }
+
+        function addColor(newColor){
+            var container = document.getElementById("container");
+            var newLine = container.children[0].cloneNode(true); 
+
+            var typeStr = "";
+
+            var my_div = document.getElementById("block");
+            if(newColor.Type == 0){
+                let colorCode = "rgba(" + newColor.Code+ ",1.0)";
+                my_div.style["background-color"] = colorCode;
+                typeStr = "RGB";
+            }
+            else if(newColor.Type == 1){
+                let colorCode = "rgba(" + newColor.Code+ ")";
+                my_div.style["background-color"] = colorCode;
+                typeStr = "RGBA";
+            }
+            else if(newColor.Type == 2){
+                my_div.style["background-color"] = newColor.Code;
+                typeStr = "HEX";
+            }
+
+            document.getElementById('colorName').innerText = newColor.Name;
+            document.getElementById('colorType').innerText = typeStr;
+            document.getElementById('colorCode').innerText = newColor.Code;
+
+            container.appendChild(newLine);
+        }   
+
+        function saveToCookie () {
+            //let hours = 3;
+            //now.setTime(now.getTime()+hours*60*60*1000);
+                
+            let array = [];
+
+            for(var i = 0; i < colorArray.length; i++){
+                //Сохраняем cookie-объект:
+                let c = JSON.stringify(colorArray[i]);
+                console.log(c);
+                array.push(c);
+            } 
+
+            //Сохраняем cookie-массив:
+            let coockieArray = array.join(separator);
+            console.log(coockieArray);
+            setCookie(cookieName,coockieArray);
+        }
+
+        function setCookie (name, value) {
+            let c = name + "=" + escape(value)+
+            "; max-age=10800";  //3 часа
+            console.log(c);
+            document.cookie = c;
+            console.log("document.cookie: " + document.cookie);
+            getCookie(cookieName);
+            //https://www.w3schools.com/tryit/tryit.asp?filename=tryhtml_hello - проверка cookie
+        }
+
+        function getCookie (name) {
+            console.log("getCookie >>");
+            let p = name+"=";
+            console.log(p);
+            let i1 = document.cookie.indexOf(p);
+            console.log(i1);
+            if (i1 == -1) return null;
+            let i2 = document.cookie.indexOf(";",i1 + p.length);
+            if (i2 == -1) i2 = document.cookie.length;
+
+            let result = unescape(document.cookie.substring(i1 + p.length,i2));
+            console.log(result);
+            return result;
+        }
+
+        window.addEventListener('load', function(e) {
+            colorArray = [];
+            console.log("load");
+            //Читаем cookie-массив:
+            let c = getCookie(cookieName);
+            console.log(c);
+            if (c==undefined || c=='') return;
+            arr = c.split(separator).slice(0); 
+            //Читаем cookie-объект
+            //obj = Object.assign(JSON.parse(d));
+            console.log(arr);
+
+            console.log("get colors >>");
+
+            for(var i = 0; i < arr.length; i++){
+                var color = Object.assign(JSON.parse(arr[i]));
+                console.log(i + ") " + JSON.stringify(color));
+                colorArray.push(color);
+                console.log(colorArray);
+
+                addColor(color);  //работает, проверила на сайте https://www.w3schools.com/
+            }
+            console.log("get colors <<");
+        });
+    </script>
+</body>
+</html>

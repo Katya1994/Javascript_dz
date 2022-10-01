@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JavaScript DZ 1</title>
+    <style>
+      p {
+        background: lightblue;
+      }
+    </style>
+  </head>
+  <body>
+  <div>	
+	<div style = "margin: 20px">
+	Task 1:
+    <label for="inp_1">Введите число 1:</label>
+	<input type="text" class="form-control" id="inp_1">
+	<label for="inp_2">Введите число 2:</label>
+	<input type="text" class="form-control" id="inp_2">
+	<button onclick="compareNumbers()">Сравнить</button>
+	</div >
+	<div style = "margin: 20px"> 
+	Task 2:
+	<label for="inp_3">Введите число для получения факториала:</label>
+	<input type="text" class="form-control" id="inp_3">
+	<button onclick="showFactorial()">Факториал</button>
+	</div>
+	<div style = "margin: 20px"> 
+	Task 3:
+	<label>Введите три цифры:</label>
+	<input type="text" class="form-control" id="inp_4">
+	<input type="text" class="form-control" id="inp_5">
+	<input type="text" class="form-control" id="inp_6">
+	<button onclick="getNumber()">Сделать число</button>
+	</div>
+	<div style = "margin: 20px"> 
+	Task 4:
+	<label for="inp_7">Длина:</label>
+	<input type="text" class="form-control" id="inp_7">
+	<label for="inp_8">Ширина:</label>
+	<input type="text" class="form-control" id="inp_8">
+	<button onclick="getArea()">Площадь</button>
+	</div>
+	<div style = "margin: 20px"> 
+	Task 5:
+	<label for="inp_9">Введите число:</label>
+	<input type="text" class="form-control" id="inp_9">
+	<button onclick="isPerfectNumber()">Проверить</button>
+	</div>		
+    <script>
+		function compareNumbers() 
+		{
+			var first = Number(document.getElementById('inp_1').value);
+			var second = Number(document.getElementById('inp_2').value)
+	  
+			if(first > second){
+				return 1;
+			}
+			else if(first == second){
+				return 0;
+			}
+			else{
+				return -1;}
+		}
+	  
+		function factorial(n) {
+			return (n != 1) ? n * factorial(n - 1) : 1;
+		}
+	
+		function showFactorial()
+		{
+			alert(factorial(document.getElementById('inp_3').value));
+		}
+		function getNumber()
+		{
+			return Number(document.getElementById('inp_4').value + document.getElementById('inp_5').value + document.getElementById('inp_6').value);
+		}
+		function getArea()
+		{
+			if(document.getElementById('inp_7').value == "")
+			{
+				return(Number(document.getElementById('inp_8').value * document.getElementById('inp_8').value));
+			}
+			else if(document.getElementById('inp_8').value == "")
+			{
+				return(Number(document.getElementById('inp_7').value * document.getElementById('inp_7').value));
+			}
+			else
+			{
+				return(Number(document.getElementById('inp_7').value * document.getElementById('inp_8').value));
+			}
+		}
+		function isPerfectNumber() {        
+            let sum = 0;
+			let number = Number(document.getElementById('inp_9').value);
+			
+            for(let i = 1; i < number; i++) {
+                if (number % i == 0) {
+                    sum += i; 
+                }
+            } 
+            
+            if (sum == number) 
+			{
+                return true;
+            }
+            else
+			{
+				return false;
+			}          
+        };
+    </script>
+  
+</div>
+</body></html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JavaScript DZ 2</title>
+    <style>
+      p {
+        background: lightblue;
+      }
+    </style>
+  </head>
+  <body>
+  <div>	
+	<div style = "margin: 20px">
+	Task 1:
+    <label for="inp_1">Введите строку:</label>
+	<input type="text" class="form-control" id="inp_1">
+	<button onclick="lookString(document.getElementById('inp_1').value)">Проверить</button>
+	</div >	
+	<div style = "margin: 20px">
+	Task 5: Aббревиатура
+    <label for="inp_2">Введите строку:</label>
+	<input type="text" class="form-control" id="inp_2">
+	<button onclick="getAbbreviation(document.getElementById('inp_2').value)">Проверить</button>
+	</div >
+	Task 7: Калькулятор
+    <label for="inp_3">Введите строку:</label>
+	<input type="text" class="form-control" id="inp_3">
+	<button onclick="calculate(document.getElementById('inp_3').value)">Посчитать</button>
+	</div >		
+    <script>
+		function lookString(str) 
+		{
+			sumNumbers = str.match(/\d+/g).join('').length;
+			sumLetters = str.match(/[a-z]/gi).join('').length;
+			sumRemain = str.length - sumLetters - sumNumbers;
+			
+			console.log("numbers: ", sumNumbers, "letters: ", sumLetters, "remain: ", sumRemain);
+		}
+		
+		function getAbbreviation(str)
+		{
+			var words = str.split(' ');
+			
+			var abbrevStr = "";
+			
+			for(var i = 0; i < words.length; i++)
+			{
+				abbrevStr += words[i][0].toUpperCase();
+			}
+			console.log(abbrevStr);
+			return abbrevStr;
+		}		
+		
+		function calculate(str) {
+			//parse string
+			var numbers = str.match(/(-?\d+(\.\d+)?)/g).map(n => +n);
+			
+			var mark = str.replace(/[\s\dA-Z]/gi, '').replace(/ +/g, '');
+			
+			console.log(numbers);
+			console.log(mark);
+			
+			var result = "";	
+				
+			switch (mark[0]) 
+			{
+			case "*":
+				result = numbers[0] * numbers[1];
+				break;
+			case "+":
+				result = numbers[0] + numbers[1];
+				console.log(result);
+				break;
+			case "-":
+				result = numbers[0] - numbers[1];
+				break;
+			case "/":
+				result = numbers[0] / numbers[1];
+				break;				
+			}
+			console.log("result = ", result);
+			return result;
+		}
+    </script>
+</div>
+</body></html>

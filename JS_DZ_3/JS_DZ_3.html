@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<link rel="stylesheet" type="text/css" href="mystyle.css" media="screen" />
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JavaScript DZ 2</title>
+    <style>
+      p {
+        background: lightblue;
+      }
+    </style>
+  </head>
+  <body>
+  <div>	
+	<button id="myBtn">Открыть окно</button>
+	<!-- Затемнение всей страницы при открытии окна -->
+	<div id="myModal" class="modal">
+		<div class="modal-content">
+			<p>Hello from Modal window!</p>
+			<button class="close">Закрыть</button>
+		</div>
+	</div>
+    <script>
+	document.addEventListener('DOMContentLoaded', function() {
+    //модальное окно
+    const modal = document.querySelector('#myModal');
+
+    // назначаем обработчик события для клика по кнопке открытия окна
+    document.querySelector('#myBtn').addEventListener('click', openModal);
+
+    /*
+     * Обработчик события клика по кнопке открытия модального окна
+     */
+    function openModal() {
+        modal.classList.add('modal-open');
+        // обработчики событий, которые работают, когда окно открыто
+        attachModalEvents();
+    }
+
+    /*
+     * Функция назначает обработчики событий к элементам модального окна при открытии
+     */
+    function attachModalEvents() {
+        // закрывать модальное окно при нажатии на крестик
+        modal.querySelector('.close').addEventListener('click', closeModal);
+    }
+
+    /*
+     * Обработчик события клика по кнопке закрытия модального окна
+     */
+    function closeModal() {
+        modal.classList.remove('modal-open');
+        // окно закрыто, эти обработчики событий больше не нужны
+        detachModalEvents();
+    }
+
+    /*
+     * Функция удаляет обработчики событий к элементам модального окна при закрытии
+     */
+    function detachModalEvents() {
+        modal.querySelector('.close').removeEventListener('click', closeModal);
+    }
+});
+    </script>
+</div>
+</body></html>

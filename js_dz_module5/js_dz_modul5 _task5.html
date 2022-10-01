@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JS_DZ_task5</title>
+    <style>
+    	form{padding: 10px; background-color: #e8d55d; }
+    	* {margin: 5px;}
+    	h{
+    		font-weight: bold;
+    	}
+    	select{
+    		width: 100px;
+    	}
+    </style>
+</head>
+<body>
+	
+	<form method='GET'>
+        <div style="margin:10px 0;">
+        	Group:
+            <select name="type" id="select_group">
+            </select>
+            Lesson:
+            <select name="type" id="select_lesson">
+            </select>
+            <input type="button" value="Select" onclick="select_click()" />
+        </div>
+        <hr>
+        <div id="hidden_div" style="display: none;">
+        	Topic <input type="text" name="topic" placeholder="" />
+        	<div id="sdiv"> 
+        	<p>Is present:</p>       		
+        	</div>
+        	<input type="button" value="Save" onclick="save_click()" />
+        </div>
+        
+    </form>
+
+    
+    <script>
+		let students = ["Student 1", "Student 2", "Student 3"];
+		let groups = ["Group 1", "Group 2", "Group 3"];
+		let lessons = ["Lesson 1", "Lesson 2", "Lesson 3"];
+
+		let resultArray = [];
+
+		var select = document.getElementById("select_group");
+		for(index in groups) {
+    		select.options[select.options.length] = new Option(groups[index], index);
+		}
+		var select = document.getElementById("select_lesson");
+		for(index in lessons) {
+    		select.options[select.options.length] = new Option(lessons[index], index);
+		}
+
+		var students_div = document.getElementById('sdiv');
+		for(index in students) {
+			students_div.appendChild(document.createTextNode(students[index]));
+    		var cb = document.createElement('input');
+    		cb.type = 'checkbox';
+    		students_div.appendChild(cb);
+    		cb.name = students[index];
+    		students_div.appendChild(document.createElement('br'));
+		}
+
+
+    	function select_click(){
+    		var my_div = document.getElementById("hidden_div");
+    		my_div.style["display"] = "block";
+    	}
+
+		function save_click(){
+			
+			var container = document.getElementById("sdiv");
+
+			var nodes = document.querySelectorAll("#sdiv input[type=checkbox]");
+			console.log("checkbox count = " + nodes.length);
+			
+			//не подходит, берет лишние элменты
+			// for(index in nodes){
+			// 	console.log("" + index + ") node");
+			// }
+
+			var studentIndexArray = [];
+			for(var i = 0; i < nodes.length; i++ ){
+				console.log("" + i + ") node: checked = " + nodes[i].checked);
+
+				if(nodes[i].checked){
+					studentIndexArray.push(students[i]);
+				}
+			}
+
+			let result = {
+				Group: document.getElementById("select_group").selectedIndex + 1,
+  				Lesson: document.getElementById("select_lesson").selectedIndex + 1,
+  				students: studentIndexArray
+			}
+
+			console.log(result);
+
+			resultArray.push(result);
+
+			console.log(resultArray);
+		}		
+    </script>
+</body>
+</html>
